@@ -16,8 +16,8 @@ usage：
 """.strip()
 __plugin_des__ = "舔狗的一天"
 __plugin_cmd__ = ["舔狗日记|tgrj"]
-__plugin_version__ = 0.1
-__plugin_author__ = 'Shouzi'
+__plugin_version__ = 0.2
+__plugin_author__ = 'Shouzi|molanp'
 __plugin_settings__ = {
     "level": 5,
     "default_status": True,
@@ -28,11 +28,14 @@ __plugin_settings__ = {
 
 tgrj = on_regex("^(舔狗日记|tgrj)$", priority=5, block=True)
 
-url = "http://ovooa.com/API/tgrj/api.php"
+url = "http://api.x6nn.cn/api/tg"
 
 
 @tgrj.handle()
 async def send_video(bot: Bot, event: Event, state: T_State):
     mp4 = requests.get(url)
-    data = mp4.text
+    try:
+       data = mp4.text
+    except:
+       data = mp4
     await tgrj.send(data)
