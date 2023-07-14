@@ -1,10 +1,5 @@
-from nonebot.adapters.onebot.v11 import Message, MessageSegment
 from nonebot import on_regex
-from nonebot.typing import T_State
-from nonebot.adapters import Bot, Event
 from services.log import logger
-from utils.manager import withdraw_message_manager
-from configs.config import Config
 import requests
 
 __zx_plugin_name__ = "舔狗日记"
@@ -16,7 +11,7 @@ usage：
 """.strip()
 __plugin_des__ = "舔狗的一天"
 __plugin_cmd__ = ["舔狗日记|tgrj"]
-__plugin_version__ = 0.2
+__plugin_version__ = 0.3
 __plugin_author__ = 'Shouzi|molanp'
 __plugin_settings__ = {
     "level": 5,
@@ -28,14 +23,24 @@ __plugin_settings__ = {
 
 tgrj = on_regex("^(舔狗日记|tgrj)$", priority=5, block=True)
 
-url = "http://api.x6nn.cn/api/tg"
+url = [
+   "https://v2.api-m.com/api/dog",
+   "https://v.api.aa1.cn/api/tiangou"
+   ]
 
 
 @tgrj.handle()
-async def send_video(bot: Bot, event: Event, state: T_State):
-    mp4 = requests.get(url)
-    try:
-       data = mp4.text
-    except:
-       data = mp4
-    await tgrj.send(data)
+async def send_video():
+   for i in url:
+      try:
+         try:
+            mp4 = requests.get(i)
+            try:
+               data = mp4.data
+            except:
+               data = mp4
+         except:
+            logger.error(f"api： {i} 已失效")
+         await tgrj.send(data)
+      except:
+         logger.error("api已全部失效")
