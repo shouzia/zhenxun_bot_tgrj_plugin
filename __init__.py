@@ -41,6 +41,6 @@ async def send_video():
                data = mp4
          except:
             logger.error(f"api： {i} 已失效")
-         await tgrj.send(data)
+         await tgrj.finish(data)
       except:
          logger.error("api已全部失效")
