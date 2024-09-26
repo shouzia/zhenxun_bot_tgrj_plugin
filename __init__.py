@@ -1,5 +1,4 @@
 from nonebot import on_regex
-from services.log import logger
 import requests
 
 from typing import Tuple
